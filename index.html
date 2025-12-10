@@ -2,74 +2,49 @@
 <html lang="el">
 <head>
   <meta charset="UTF-8" />
-  <title>AI Concierge – Premium Widget</title>
+  <title>AI Concierge – Hotel Widget</title>
 
   <style>
     :root {
-      --primary: #0066ff;
-      --primary-dark: #003d99;
-      --bg-dark: #0f172a;
-      --bg-light: #e5e7eb;
+      --primary: #2563eb;
+      --primary-dark: #1d4ed8;
+      --bg-dark: #020617;
+      --bg-light: #f3f4f6;
     }
 
     body {
-      font-family: "Segoe UI", Arial, sans-serif;
+      font-family: "Segoe UI", system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
       background: radial-gradient(circle at top, #1d4ed8 0, #020617 55%);
       margin: 0;
       min-height: 100vh;
       color: white;
-      transition: background 0.25s ease;
     }
 
-    /* LIGHT THEME OVERRIDES */
     body.light-theme {
       background: linear-gradient(180deg, #e5e7eb, #ffffff);
       color: #020617;
     }
 
-    body.light-theme #hotelCard {
-      background: #ffffff;
-      color: #020617;
-      border-color: #cbd5f5;
-    }
-
-    body.light-theme #chatbox {
-      background: #ffffff;
-      border-color: #cbd5f5;
-    }
-
-    body.light-theme #messages {
-      background: #f3f4f6;
-    }
-
-    body.light-theme .bot {
-      background: #ffffff;
-      color: #111827;
-      border-color: #e5e7eb;
-    }
-
-    body.light-theme .user {
-      background: linear-gradient(135deg, #2563eb, #1d4ed8);
-    }
-
-    body.light-theme #inputRow {
-      background: #ffffff;
-    }
-
-    /* Μικρό info card πάνω αριστερά (optional, καθαρά για ομορφιά) */
+    /* Μικρή κάρτα ξενοδοχείου επάνω αριστερά */
     #hotelCard {
       position: fixed;
       top: 20px;
       left: 20px;
       padding: 14px 18px;
       border-radius: 18px;
-      background: rgba(15, 23, 42, 0.85);
-      border: 1px solid rgba(148, 163, 184, 0.4);
-      box-shadow: 0 12px 30px rgba(0, 0, 0, 0.35);
+      background: rgba(15, 23, 42, 0.9);
+      border: 1px solid rgba(148, 163, 184, 0.5);
+      box-shadow: 0 12px 30px rgba(0, 0, 0, 0.4);
       backdrop-filter: blur(14px);
       -webkit-backdrop-filter: blur(14px);
       max-width: 260px;
       font-size: 13px;
+    }
+
+    body.light-theme #hotelCard {
+      background: #ffffff;
+      color: #020617;
+      border-color: #cbd5f5;
     }
 
     #hotelCard h1 {
@@ -82,57 +57,61 @@
       opacity: 0.8;
     }
 
+    body.light-theme #hotelCard small {
+      color: #4b5563;
+    }
+
     /* Floating chat bubble */
     #chatBubble {
-      width: 68px;
-      height: 68px;
-      background: radial-gradient(circle at 30% 0, #ffffff66 0, #ffffff00 40%),
+      width: 64px;
+      height: 64px;
+      background: radial-gradient(circle at 30% 0, #ffffff80 0, #ffffff00 40%),
                   linear-gradient(135deg, var(--primary), var(--primary-dark));
       border-radius: 50%;
       position: fixed;
-      bottom: 25px;
-      right: 25px;
+      bottom: 20px;
+      right: 20px;
       cursor: pointer;
       display: flex;
       justify-content: center;
       align-items: center;
-      box-shadow: 0 18px 45px rgba(0, 0, 0, 0.5);
+      box-shadow: 0 18px 40px rgba(0, 0, 0, 0.55);
       color: white;
-      font-size: 32px;
-      transition: transform 0.2s ease, box-shadow 0.2s ease;
-      border: 1px solid #bfdbfe44;
-      z-index: 15;
+      font-size: 30px;
+      border: 1px solid rgba(191, 219, 254, 0.6);
+      transition: transform 0.18s ease, box-shadow 0.18s ease;
+      z-index: 20;
     }
 
     #chatBubble:hover {
-      transform: translateY(-3px) scale(1.05);
-      box-shadow: 0 22px 55px rgba(0, 0, 0, 0.6);
+      transform: translateY(-2px) scale(1.03);
+      box-shadow: 0 22px 50px rgba(0, 0, 0, 0.7);
     }
 
-    /* Chatbox */
+    /* Chat Window */
     #chatbox {
       width: 390px;
-      height: 580px;
+      height: 560px;
       border-radius: 22px;
-      background: rgba(15, 23, 42, 0.90);
+      background: rgba(15, 23, 42, 0.96);
       border: 1px solid rgba(148, 163, 184, 0.5);
       position: fixed;
-      bottom: 110px;
-      right: 25px;
-      display: none; /* ξεκινά κρυφό */
+      bottom: 95px;
+      right: 20px;
+      display: none;
       flex-direction: column;
       overflow: hidden;
-      box-shadow: 0 22px 60px rgba(0, 0, 0, 0.65);
+      box-shadow: 0 22px 60px rgba(0, 0, 0, 0.75);
       backdrop-filter: blur(18px);
       -webkit-backdrop-filter: blur(18px);
-      animation: fadeIn 0.3s ease-out;
-      z-index: 20;
+      animation: fadeIn 0.25s ease-out;
+      z-index: 25;
     }
 
     @keyframes fadeIn {
       from {
         opacity: 0;
-        transform: translateY(16px) scale(0.96);
+        transform: translateY(12px) scale(0.96);
       }
       to {
         opacity: 1;
@@ -140,9 +119,9 @@
       }
     }
 
-    /* Header με avatar / close / status / theme toggle */
+    /* Header */
     #chatHeader {
-      padding: 10px 10px;
+      padding: 8px 10px;
       border-bottom: 1px solid rgba(148, 163, 184, 0.35);
       display: flex;
       align-items: center;
@@ -154,7 +133,7 @@
       width: 34px;
       height: 34px;
       border-radius: 50%;
-      background: radial-gradient(circle at 30% 0, #ffffffaa 0, #ffffff00 40%),
+      background: radial-gradient(circle at 30% 0, #ffffffaa 0, #ffffff00 42%),
                   linear-gradient(135deg, #22c55e, #16a34a);
       display: flex;
       align-items: center;
@@ -167,6 +146,7 @@
       flex: 1;
       display: flex;
       flex-direction: column;
+      gap: 2px;
     }
 
     #headerText strong {
@@ -204,34 +184,44 @@
       color: #e5e7eb;
     }
 
+    body.light-theme #chatbox {
+      background: #ffffff;
+      border-color: #cbd5f5;
+    }
+
+    body.light-theme #chatHeader {
+      border-bottom-color: #e5e7eb;
+      color: #111827;
+    }
+
     /* Messages */
     #messages {
       flex: 1;
       padding: 12px;
       overflow-y: auto;
-      background: linear-gradient(180deg, rgba(15,23,42,0.85), rgba(15,23,42,0.98));
+      background: linear-gradient(180deg, rgba(15, 23, 42, 0.9), rgba(15, 23, 42, 1));
       font-size: 14px;
     }
 
     #messages p {
-      padding: 9px 13px;
+      padding: 8px 12px;
       border-radius: 14px;
-      max-width: 82%;
+      max-width: 80%;
       margin-bottom: 10px;
-      line-height: 1.35;
+      line-height: 1.38;
       animation: fadeInMsg 0.18s ease-out;
       word-wrap: break-word;
       white-space: pre-wrap;
     }
 
     @keyframes fadeInMsg {
-      from { opacity: 0; transform: translateY(5px); }
+      from { opacity: 0; transform: translateY(4px); }
       to { opacity: 1; transform: translateY(0); }
     }
 
     .bot {
-      background: rgba(15, 23, 42, 0.85);
-      border: 1px solid rgba(148, 163, 184, 0.6);
+      background: rgba(15, 23, 42, 0.9);
+      border: 1px solid rgba(148, 163, 184, 0.7);
       color: #e5e7eb;
     }
 
@@ -240,6 +230,20 @@
       color: white;
       margin-left: auto;
       border-bottom-right-radius: 4px;
+    }
+
+    body.light-theme #messages {
+      background: #f3f4f6;
+    }
+
+    body.light-theme .bot {
+      background: #ffffff;
+      color: #111827;
+      border-color: #e5e7eb;
+    }
+
+    body.light-theme .user {
+      background: linear-gradient(135deg, #2563eb, #1d4ed8);
     }
 
     /* Typing indicator */
@@ -269,22 +273,22 @@
       to { transform: translateY(-3px); opacity: 1; }
     }
 
-    /* Quick action buttons */
+    /* Quick actions */
     #quickActions {
       display: flex;
       gap: 6px;
       padding: 8px;
-      border-top: 1px solid rgba(148, 163, 184, 0.35);
-      border-bottom: 1px solid rgba(148, 163, 184, 0.25);
-      background: rgba(15, 23, 42, 0.95);
+      border-top: 1px solid rgba(148, 163, 184, 0.4);
+      border-bottom: 1px solid rgba(148, 163, 184, 0.3);
+      background: rgba(15, 23, 42, 0.96);
       overflow-x: auto;
     }
 
     .quickBtn {
-      padding: 7px 11px;
+      padding: 6px 10px;
       background: rgba(15, 23, 42, 0.9);
       border-radius: 999px;
-      border: 1px solid rgba(148, 163, 184, 0.8);
+      border: 1px solid rgba(148, 163, 184, 0.9);
       cursor: pointer;
       font-size: 12px;
       white-space: nowrap;
@@ -298,15 +302,29 @@
       color: white;
     }
 
+    body.light-theme #quickActions {
+      background: #ffffff;
+      border-top-color: #e5e7eb;
+      border-bottom-color: #e5e7eb;
+    }
+
+    body.light-theme .quickBtn {
+      background: #f9fafb;
+      border-color: #d1d5db;
+      color: #111827;
+    }
+
+    /* Input row */
     #inputRow {
       display: flex;
       border-top: 1px solid rgba(148, 163, 184, 0.35);
-      background: rgba(15, 23, 42, 0.96);
+      background: rgba(15, 23, 42, 0.97);
+      align-items: center;
     }
 
     #msgInput {
       flex: 1;
-      padding: 10px;
+      padding: 9px 10px;
       font-size: 14px;
       border: none;
       outline: none;
@@ -319,7 +337,7 @@
     }
 
     #sendBtn {
-      padding: 0 18px;
+      padding: 0 16px;
       background: linear-gradient(135deg, #3b82f6, #1d4ed8);
       color: white;
       border: none;
@@ -333,14 +351,23 @@
       filter: brightness(1.05);
     }
 
+    body.light-theme #inputRow {
+      background: #ffffff;
+      border-top-color: #e5e7eb;
+    }
+
+    body.light-theme #msgInput {
+      color: #111827;
+    }
+
     /* Restart button */
     #restartBtn {
       display: none;
-      margin: 6px 12px 12px;
+      margin: 6px 12px 10px;
       width: calc(100% - 24px);
-      padding: 8px;
+      padding: 7px 10px;
       border-radius: 999px;
-      border: 1px solid rgba(148, 163, 184, 0.7);
+      border: 1px solid rgba(148, 163, 184, 0.8);
       background: transparent;
       color: #e5e7eb;
       font-size: 13px;
@@ -369,13 +396,12 @@
 
 <body>
 
-  <!-- Μικρή καρτέλα ξενοδοχείου -->
   <div id="hotelCard">
     <h1>Acropolis View Hotel</h1>
     <small>AI Concierge demo widget<br>Αθήνα, κέντρο – δίπλα στην Ακρόπολη</small>
   </div>
 
-  <!-- Floating bubble -->
+  <!-- Floating chat bubble -->
   <div id="chatBubble">💬</div>
 
   <!-- Chat window -->
@@ -384,13 +410,14 @@
       <div id="avatar">🤵</div>
       <div id="headerText">
         <strong>AI Concierge</strong>
-        <span><span id="statusDot"></span>Διαθέσιμος για βοήθεια</span>
+        <span><span id="statusDot"></span>Διαθέσιμος για βοήθεια 24/7</span>
       </div>
       <button id="themeToggle" class="headerBtn">☾</button>
       <button id="closeBtn" class="headerBtn">×</button>
     </div>
 
     <div id="messages"></div>
+
     <div id="typing">
       <span class="typing-dot"></span>
       <span class="typing-dot"></span>
@@ -398,26 +425,24 @@
       Ο concierge πληκτρολογεί…
     </div>
 
-    <!-- Quick replies -->
     <div id="quickActions">
-      <div class="quickBtn" data-msg="Ποιες είναι οι ώρες check-in και check-out;">
+      <div class="quickBtn" data-msg="Ποιες είναι οι ώρες check-in και check-out; 🕒">
         🕒 Check-in / Check-out
       </div>
-
-      <div class="quickBtn" data-msg="Θα ήθελα να κανονίσω μεταφορά με ταξί από ή προς το αεροδρόμιο.">
-        🚕 Μεταφορά αεροδρομίου
+      <div class="quickBtn" data-msg="Θα ήθελα μεταφορά με ταξί από ή προς το αεροδρόμιο.">
+        🚕 Ταξί αεροδρομίου
       </div>
-
       <div class="quickBtn" data-msg="Τι επιλογές πρωινού έχετε και ποιο είναι το ωράριο;">
-        🍽 Πρωινό & ωράριο
+        🍽️ Πρωινό & ωράριο
       </div>
-
-      <div class="quickBtn" data-msg="Τι προτείνετε να κάνω στην Αθήνα κατά τη διάρκεια της διαμονής μου;">
-        🗺 Αξιοθέατα Αθήνας
+      <div class="quickBtn" data-msg="Ποιες είναι οι καλύτερες επιλογές για βόλτες και αξιοθέατα στην Αθήνα;">
+        🗺️ Αξιοθέατα Αθήνας
       </div>
-
       <div class="quickBtn" data-msg="Υπάρχει δυνατότητα αναβάθμισης του δωματίου μου;">
         🏨 Upgrade δωματίου
+      </div>
+      <div class="quickBtn" data-msg="Ποιός είναι ο κωδικός του Wi-Fi;">
+        📶 Wi-Fi
       </div>
     </div>
 
@@ -444,12 +469,12 @@
     let customerName = null;
     let isLightTheme = false;
 
-    function toggleChat(openForce = null) {
-      if (openForce === true) {
+    function toggleChat(force = null) {
+      if (force === true) {
         chatbox.style.display = "flex";
         return;
       }
-      if (openForce === false) {
+      if (force === false) {
         chatbox.style.display = "none";
         return;
       }
@@ -472,35 +497,33 @@
       return "Καλό βράδυ";
     }
 
+    // Αναγνώριση ονόματος (απλό)
     function detectNameFromText(text) {
       const lower = text.toLowerCase();
 
-      // με λένε Νίκο
       let m = lower.match(/με λ[εέ]νε\s+([^\s,.!]+)/i);
       if (m && m[1]) {
-        customerName = m[1].charAt(0).toUpperCase() + m[1].slice(1);
+        customerName = m[1][0].toUpperCase() + m[1].slice(1);
         return;
       }
 
-      // είμαι ο/η Νίκος/Μαρία
       m = lower.match(/είμαι\s+(ο|η)\s+([^\s,.!]+)/i);
       if (m && m[2]) {
-        customerName = m[2].charAt(0).toUpperCase() + m[2].slice(1);
+        customerName = m[2][0].toUpperCase() + m[2].slice(1);
         return;
       }
 
-      // λέγομαι Νίκος
       m = lower.match(/λέγομαι\s+([^\s,.!]+)/i);
       if (m && m[1]) {
-        customerName = m[1].charAt(0).toUpperCase() + m[1].slice(1);
+        customerName = m[1][0].toUpperCase() + m[1].slice(1);
       }
     }
 
     function addMessage(text, sender) {
       const p = document.createElement("p");
-
       let finalText = text;
-      if (sender === "bot" && customerName && !text.includes("Σας ευχαριστούμε πολύ για τον χρόνο σας")) {
+
+      if (sender === "bot" && customerName && !text.startsWith("Σας ευχαριστούμε πολύ")) {
         finalText = `Αγαπητέ/ή ${customerName}, ${text}`;
       }
 
@@ -540,7 +563,7 @@
       setTyping(true);
 
       try {
-        const res = await fetch("http://localhost:3000/api/chat", {
+        const res = await fetch("https://hotel-ai-concierge-production.up.railway.app/api/chat", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ message: text }),
@@ -550,8 +573,7 @@
         addMessage(data.reply, "bot");
         playMessageSound();
 
-        // Auto-close & restart logic όταν έχει ευχαριστήριο/exit μήνυμα
-        if (data.reply.startsWith("Σας ευχαριστούμε πολύ για τον χρόνο σας")) {
+        if (data.exit) {
           restartBtn.style.display = "block";
           setTimeout(() => {
             toggleChat(false);
@@ -559,7 +581,10 @@
         }
       } catch (err) {
         console.error(err);
-        addMessage("Υπάρχει τεχνικό πρόβλημα με τον server. Δοκιμάστε ξανά σε λίγο.", "bot");
+        addMessage(
+          "Υπάρχει προσωρινό τεχνικό πρόβλημα με τον server. Δοκιμάστε ξανά σε λίγο.",
+          "bot"
+        );
       } finally {
         setTyping(false);
       }
@@ -570,16 +595,14 @@
       if (e.key === "Enter") sendMessage();
     });
 
-    // Quick reply buttons με data-msg
     quickButtons.forEach((btn) => {
       btn.addEventListener("click", () => {
-        const message = btn.dataset.msg || btn.textContent;
-        sendMessage(message);
+        const msg = btn.dataset.msg || btn.textContent;
+        sendMessage(msg);
       });
     });
 
     restartBtn.addEventListener("click", () => {
-      // reset state
       messagesDiv.innerHTML = "";
       customerName = null;
       restartBtn.style.display = "none";
@@ -594,15 +617,14 @@
         "bot"
       );
       addMessage(
-        "Μπορώ να σας βοηθήσω με ώρες check-in / check-out, μεταφορές αεροδρομίου, πρωινό ή προτάσεις για την Αθήνα. Επιλέξτε μία από τις σύντομες επιλογές ή γράψτε ελεύθερα την ερώτησή σας.",
+        "Μπορώ να σας βοηθήσω με ώρες check-in / check-out, πρωινό, Wi-Fi, μεταφορά από/προς αεροδρόμιο ή προτάσεις για βόλτες στην Αθήνα. Διαλέξτε μία από τις επιλογές ή γράψτε την ερώτησή σας ελεύθερα.",
         "bot"
       );
     }
 
-    // Αρχικό welcome + ανοίγει chat την 1η φορά
+    // Αρχικό welcome + άνοιγμα chat
     addWelcomeMessages();
     toggleChat(true);
   </script>
-
 </body>
 </html>
